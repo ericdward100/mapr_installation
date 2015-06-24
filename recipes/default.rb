@@ -14,7 +14,7 @@ include_recipe "mapr_installation::user_mapr"
 include_recipe "mapr_installation::user_root"
 include_recipe "mapr_installation::validate_host"
 include_recipe "mapr_installation::ssh"
-include_recipe "ntp"
+#include_recipe "ntp"
 
 #All cluster nodes need the following:
 include_recipe "mapr_installation::mapr_base"

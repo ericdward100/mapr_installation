@@ -28,7 +28,14 @@ package 'patch'
 package 'dstat'
 package 'lsof'
 
-package "#{node['java']['version']}"
+java_version= "#{node['java']['version']}"
+
+
+bash 'Install_java' do
+  code <<-EOH
+    yum -y install #{java_version} 
+  EOH
+end
 
 #Add JAVA_HOME to /etc/profile
 ruby_block "Set JAVA_HOME in /etc/profile" do
@@ -41,3 +48,9 @@ ruby_block "Set JAVA_HOME in /etc/profile" do
   end
 end
 
+bash 'turn_on_rpcbind' do
+  code <<-EOH
+    service rpcbind start
+    chkconfig rpcbind on
+  EOH
+end
