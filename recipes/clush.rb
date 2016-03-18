@@ -15,16 +15,15 @@ ws_nodes = node['mapr']['ws'].reject(&:empty?).join(',')
 hs_server = node['mapr']['hs']
 
 # Install clush
-ruby_block "Installing clush" do
-    block do 
-        `rpm -ivh https://github.com/downloads/cea-hpc/clustershell/clustershell-1.6-1.el6.noarch.rpm`
-    end
+ruby_block 'Installing clush' do
+  block do
+    `rpm -ivh https://github.com/downloads/cea-hpc/clustershell/clustershell-1.6-1.el6.noarch.rpm`
+  end
 end
 
-
-#groups file
-template "/etc/clustershell/groups" do
-  source "clustershell.groups.erb"
+# groups file
+template '/etc/clustershell/groups' do
+  source 'clustershell.groups.erb'
   variables({
     :all => all,
     :cldb => cldb_nodes,
@@ -33,5 +32,5 @@ template "/etc/clustershell/groups" do
     :ws => ws_nodes,
     :hs => hs_server
   })
-  mode 0644
+  mode 00644
 end

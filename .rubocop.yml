@@ -1,0 +1,8 @@
+Metrics/LineLength:
+  Max: 132
+
+Style/SingleSpaceBeforeFirstArg:
+  Enabled: false
+
+Style/HashSyntax:
+  Enabled: false
