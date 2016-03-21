@@ -6,3 +6,9 @@ Style/SingleSpaceBeforeFirstArg:
 
 Style/HashSyntax:
   Enabled: false
+
+Style/Next:
+  Enabled: false
+
+Style/BracesAroundHashParameters:
+  Enabled: false

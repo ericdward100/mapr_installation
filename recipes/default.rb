@@ -25,7 +25,7 @@ is_cldb = 'no'
 
 # Install CLDB service from attributes
 node['mapr']['cldb'].each do |cldb|
-  if node['fqdn'] == "#{cldb}"
+  if node['fqdn'] == cldb
     print "\nWill install CLDB on node: #{node['fqdn']}\n"
     is_cldb = 'yes'
     include_recipe 'mapr_installation::mapr_cldb'
@@ -34,7 +34,7 @@ end
 
 # Install Zookeeper service from attributes
 node['mapr']['zk'].each do |zk|
-  if node['fqdn'] == "#{zk}"
+  if node['fqdn'] == zk
     print "\nWill install Zookeeper on node: #{node['fqdn']}\n"
     is_zk = 'yes'
     include_recipe 'mapr_installation::mapr_zookeeper'
@@ -43,7 +43,7 @@ end
 
 # Install Resource Manager service from attributes
 node['mapr']['rm'].each do |rm|
-  if node['fqdn'] == "#{rm}"
+  if node['fqdn'] == rm
     print "\nWill install Resource Manager on node: #{node['fqdn']}\n"
     include_recipe 'mapr_installation::mapr_resourcemanager'
   end
@@ -57,7 +57,7 @@ end
 
 # Install MapR Webserver service from attributes
 node['mapr']['ws'].each do |ws|
-  if node['fqdn'] == "#{ws}"
+  if node['fqdn'] == ws
     print "\nWill install MapR Webserver on node: #{node['fqdn']}\n"
     include_recipe 'mapr_installation::mapr_webserver'
   end
@@ -90,9 +90,7 @@ else
   end
 end
 
-if is_cldb == 'no'
-  include_recipe 'mapr_installation::mapr_start_warden'
-end
+include_recipe 'mapr_installation::mapr_start_warden' if is_cldb == 'no'
 
 warden_running = 'no'
 run_check = 'no'
@@ -123,7 +121,7 @@ ruby_block 'CLDB up and running?' do
         cldb_running = 'yes'
       else
         `sleep 5`
-	print '\nSleeping for 5, waiting on CLDB...\n'
+        print '\nSleeping for 5, waiting on CLDB...\n'
       end
     end
   end
@@ -134,8 +132,8 @@ warden_running = '0'
 
 ruby_block 'Getting running warden count' do
   block do
-    while warden_running.to_s != "#{node['mapr']['node_count']}" do
-      wc=`maprcli node list -columns hostname|grep -v "hostname                      ip"|wc -l`
+    while warden_running.to_s != node['mapr']['node_count'] do
+      wc = `maprcli node list -columns hostname|grep -v "hostname                      ip"|wc -l`
       warden_running = /#{node['mapr']['node_count']}/.match(wc)
       `sleep 20`
     end

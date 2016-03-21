@@ -7,8 +7,18 @@ rm_nodes = node['mapr']['rm'].reject(&:empty?).join(',')
 
 # Run configure.sh to configure the nodes, do NOT bring the cluster up
 
-execute 'Run configure.sh to configure cluster' do
-  command "#{node['mapr']['home']}/server/configure.sh -C #{cldb_nodes} -Z #{zk_nodes} -RM #{rm_nodes} -HS #{node['mapr']['hs']} -D #{node['mapr']['node']['disks']} -N #{node['mapr']['clustername']} -no-autostart"
-  not_if {::File.exist?("#{node['mapr']['home']}/conf/disktab") }
-#	action :run
+bash 'Run configure.sh to configure cluster' do
+  command <<-EOH
+
+  #{node['mapr']['home']}/server/configure.sh \
+           -C #{cldb_nodes} \
+           -Z #{zk_nodes} \
+           -RM #{rm_nodes} \
+           -HS #{node['mapr']['hs']} \
+           -D #{node['mapr']['node']['disks']} \
+           -N #{node['mapr']['clustername']} \
+           -no-autostart
+  EOH
+  not_if { ::File.exist?("#{node['mapr']['home']}/conf/disktab") }
+  # action :run
 end

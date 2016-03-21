@@ -12,8 +12,8 @@ user node['mapr']['user'] do
 end
 
 user 'setting mapr password' do
-  username "#{node['mapr']['user']}"
-  password "#{node['mapr']['password']}"
+  username node['mapr']['user']
+  password node['mapr']['password']
   action :modify
 end
 
@@ -23,12 +23,8 @@ directory "/home/#{node['mapr']['user']}" do
   mode 0700
 end
 
-ruby_block 'Add mapr to /etc/sudoers' do
-  block do
-    file = Chef::Util::FileEdit.new("/etc/sudoers")
-    file.insert_line_after_match("root    ALL=(ALL)       ALL","mapr	ALL=(ALL) 	ALL")
-    file.insert_line_if_no_match("mapr      ALL=(ALL)       ALL", "mapr      ALL=(ALL)       ALL")
-
-    file.write_file
-  end
+sudo 'mapr' do
+  user 'mapr'
+  runas 'ALL'
+  nopasswd true
 end

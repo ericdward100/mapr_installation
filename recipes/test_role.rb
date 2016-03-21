@@ -1,18 +1,18 @@
 
-base_nodes = search(:node, 'role:test_role')
-zk_nodes = search(:node, 'role:mapr_zookeeper')
+# base_nodes = search(:node, 'role:test_role')
+# zk_nodes = search(:node, 'role:mapr_zookeeper')
 
 def create_node_service_list(roles)
-  service_nodes = []
+  # service_nodes = []
   node_fqdn_list = []
   service_nodes = search(:node, "role:#{roles}")
   # base_nodes = search(:node, "role:test_role")
   service_nodes.each do |node|
-    node_fqdn_list.push("#{node['fqdn']}")
+    node_fqdn_list.push(node['fqdn'])
     # b_nodes.push("#{node['fqdn']}")
   end
 
-  node_list = []
+  # node_list = []
   node_list = node_fqdn_list.reject(&:empty?).join(',')
 
   node_list

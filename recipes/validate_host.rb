@@ -2,8 +2,8 @@ log "\n=========== Start MapR validate_host.rb =============\n"
 
 bash 'uname -m' do
   code <<-EOF
-		 echo `uname -m`
-	EOF
+    uname -m`
+  EOF
 end
 
 execute 'validate_host_viable' do
@@ -11,61 +11,42 @@ execute 'validate_host_viable' do
   action :run
 end
 
-ruby_block 'edit /etc/sysctl' do
-  block do
-    file = Chef::Util::FileEdit.new('/etc/sysctl.conf')
-    file.search_file_delete_line('#MapR Values')
-    file.insert_line_if_no_match("#MapR\ Values", "\n#MapR Values")
+sysctl_param 'vm.swappiness' do
+  value 0
+end
 
-    file.search_file_delete_line ("vm.swappiness")
-    file.insert_line_if_no_match("vm.swappiness =","vm.swappiness = 0")
+sysctl_param 'net.ipv4.tcp_retries2' do
+  value 5
+end
 
-    file.search_file_delete_line ("net.ipv4.tcp_retries2")
-    file.insert_line_if_no_match("net.ipv4.tcp_retries2","net.ipv4.tcp_retries2 = 5")
+sysctl_param 'vm.overcommit_memory' do
+  value 0
+end
 
-    file.search_file_delete_line ("vm.overcommit_memory")
-    file.insert_line_if_no_match("vm.overcommit_memory","vm.overcommit_memory = 0 \n")
+%( hard soft ).each do |ltype|
+  set_limit 'mapr' do
+    type ltype
+    item 'nofile'
+    value 64_000
+  end
 
-    file.write_file
+  set_limit 'mapr' do
+    type ltype
+    item 'nproc'
+    value 64_000
   end
 end
 
-ruby_block 'Edit /etc/security/limits.conf' do
-  block do
-    file = Chef::Util::FileEdit.new('/etc/security/limits.conf')
-    file.search_file_delete_line ("mapr")
-    file.search_file_delete_line ("#End of")
-    file.insert_line_if_no_match("mapr","mapr	-	nofile	64000")
-    file.insert_line_if_no_match("#End of","#End of file")
-    file.write_file
-  end
+yum_repository 'maprtech' do
+  description 'MapR Technologies'
+  baseurl "http://package.mapr.com/releases/v#{node['mapr']['version']}/redhat"
+  gpgcheck false
+  action :create
 end
 
-ruby_block 'Edit /etc/security/limits.d/90-nproc.conf' do
-  block do
-    file  = Chef::Util::FileEdit.new("/etc/security/limits.d/90-nproc.conf")
-    file.search_file_delete_line ("mapr")
-    file.search_file_delete_line ("#End of")
-    file.insert_line_if_no_match("mapr","mapr	-	nproc	64000")
-    file.insert_line_if_no_match("#End of","#End of file")
-
-    file.write_file
-  end
-end
-
-
-file '/etc/yum.repos.d/maprtech.repo' do
-  content "[maprtech]
-name=MapR Technologies
-baseurl=http://package.mapr.com/releases/v#{node['mapr']['version']}/redhat/
-enabled=1
-gpgcheck=0
-protect=1
-
-[maprecosystem]
-name=MapR Technologies
-baseurl=http://package.mapr.com/releases/ecosystem-4.x/redhat
-enabled=1
-gpgcheck=0
-protect=1"
+yum_repository 'maprecosystem' do
+  description 'MapR Technologies (ecosystem)'
+  baseurl 'http://package.mapr.com/releases/ecosystem-4.x/redhat'
+  gpgcheck false
+  action :create
 end
