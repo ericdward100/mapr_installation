@@ -4,6 +4,8 @@ default['mapr']['gid'] = 5000
 default['mapr']['user'] = 'mapr'
 default['mapr']['group'] = 'mapr'
 
+default['mapr']['manage_java'] = true
+
 # All MapR nodes in this cluster
 default['mapr']['cluster_nodes'] = [
   'ip-172-16-2-80.ec2.internal',
@@ -28,5 +30,5 @@ default['mapr']['repo_url'] = 'http://package.mapr.com/releases'
 
 default['mapr']['node']['disks'] = '/dev/xvdf,/dev/xvdg'
 
-default['java']['version'] = 'java-1.7.0-openjdk-devel-1.7.0.79-2.5.5.3.el6_6.x86_64'
-default['java']['home'] = '/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.79.x86_64/'
+# default['java']['version'] = 'java-1.7.0-openjdk-devel-1.7.0.79-2.5.5.3.el6_6.x86_64'
+# default['java']['home'] = '/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.79.x86_64/'

@@ -23,7 +23,7 @@ sysctl_param 'vm.overcommit_memory' do
   value 0
 end
 
-%( hard soft ).each do |ltype|
+%w( hard soft ).each do |ltype|
   set_limit 'mapr' do
     type ltype
     item 'nofile'
