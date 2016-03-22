@@ -1,6 +1,6 @@
 log "\n=========== Start MapR user_mapr.rb =============\n"
 
-databag    = node['mapr']['users_data_bag']
+data_bag   = node['mapr']['users_data_bag']
 mapr_group = node['mapr']['group']
 mapr_gid   = node['mapr']['gid']
 
