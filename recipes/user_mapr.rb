@@ -1,26 +1,15 @@
 log "\n=========== Start MapR user_mapr.rb =============\n"
 
-group node['mapr']['group'] do
-  gid node['mapr']['gid']
-end
+databag    = node['mapr']['users_data_bag']
+mapr_group = node['mapr']['group']
+mapr_gid   = node['mapr']['gid']
 
-user node['mapr']['user'] do
-  uid node['mapr']['uid']
-  gid node['mapr']['gid']
-  shell '/bin/bash'
-  home "/home/#{node['mapr']['user']}"
-end
-
-user 'setting mapr password' do
-  username node['mapr']['user']
-  password node['mapr']['password']
-  action :modify
-end
-
-directory "/home/#{node['mapr']['user']}" do
-  owner node['mapr']['user']
-  group node['mapr']['group']
-  mode 0700
+users_manage mapr_group do
+  group_id mapr_gid
+  action [:create]
+  data_bag data_bag
+  manage_nfs_home_dirs false
+  not_if { data_bag.nil? }
 end
 
 sudo 'mapr' do

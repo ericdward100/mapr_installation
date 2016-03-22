@@ -1,10 +1,8 @@
+default['mapr']['users_data_bag'] = 'users'
 default['mapr']['uid'] = 5000
 default['mapr']['gid'] = 5000
 default['mapr']['user'] = 'mapr'
 default['mapr']['group'] = 'mapr'
-default['mapr']['password'] = '$1$x4GGdWjX$5IZsb6wdcgGjzdSKK6yd6/'
-default['root']['password'] = '$1$PvTToSKD$CDPWULL69FK00rQy7R6Rt.'
-default['ntp']['servers'] = ['0.pool.ntp.org', '1.pool.ntp.org']
 
 # All MapR nodes in this cluster
 default['mapr']['cluster_nodes'] = [
@@ -22,12 +20,6 @@ default['mapr']['zk'] = ['ip-172-16-2-80.ec2.internal', 'ip-172-16-2-227.ec2.int
 default['mapr']['rm'] = ['ip-172-16-2-227.ec2.internal', 'ip-172-16-2-245.ec2.internal']
 default['mapr']['hs'] = 'ip-172-16-2-245.ec2.internal'
 default['mapr']['ws'] = ['ip-172-16-2-80.ec2.internal', 'ip-172-16-2-227.ec2.internal']
-
-default['se_status'] = 'Disabled'
-
-default['mapr']['node']['host'] = 'nodeX'
-default['mapr']['node']['fqdn'] = 'nodeX.cluster.com'
-default['mapr']['node']['ip'] = '1.1.1.1'
 
 default['mapr']['home'] = '/opt/mapr'
 default['mapr']['clustername'] = 'chef_test_cluster'
