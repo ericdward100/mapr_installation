@@ -14,8 +14,7 @@ rm_nodes = node['mapr']['rm'].reject(&:empty?).join(',')
 ws_nodes = node['mapr']['ws'].reject(&:empty?).join(',')
 hs_server = node['mapr']['hs']
 
-# Install clush
-bash do
+bash 'install lush' do
   command <<-EOH
     rpm -ivh https://github.com/downloads/cea-hpc/clustershell/clustershell-1.6-1.el6.noarch.rpm
   EOH
