@@ -20,6 +20,13 @@ bash 'install lush' do
   EOH
 end
 
+directory '/etc/clustershell' do
+  owner 'root'
+  group 'root'
+  mode 00755
+  action :create
+end
+
 # groups file
 template '/etc/clustershell/groups' do
   source 'clustershell.groups.erb'

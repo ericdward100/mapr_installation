@@ -3,6 +3,11 @@ mapr_installation CHANGELOG
 
 This file is used to list changes made in each version of the mapr_installation cookbook.
 
+## v0.3.1
+
+* make the /etc/clustershell directory
+* this version successfully launched a single node cluster
+
 ## v0.3.0
 
 * switch to java cookbook

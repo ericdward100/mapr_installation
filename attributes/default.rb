@@ -17,11 +17,11 @@ default['mapr']['cluster_nodes'] = [
 default['mapr']['node_count'] = '3'
 
 # Define MapR roles for configure.sh here
-default['mapr']['cldb'] = ['ip-172-16-2-80.ec2.internal', 'ip-172-16-2-227.ec2.internal']
-default['mapr']['zk'] = ['ip-172-16-2-80.ec2.internal', 'ip-172-16-2-227.ec2.internal', 'ip-172-16-2-245.ec2.internal']
-default['mapr']['rm'] = ['ip-172-16-2-227.ec2.internal', 'ip-172-16-2-245.ec2.internal']
+default['mapr']['cldb'] = []
+default['mapr']['zk'] = []
+default['mapr']['rm'] = []
 default['mapr']['hs'] = 'ip-172-16-2-245.ec2.internal'
-default['mapr']['ws'] = ['ip-172-16-2-80.ec2.internal', 'ip-172-16-2-227.ec2.internal']
+default['mapr']['ws'] = []
 
 default['mapr']['home'] = '/opt/mapr'
 default['mapr']['clustername'] = 'chef_test_cluster'

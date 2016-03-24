@@ -8,7 +8,7 @@ rm_nodes = node['mapr']['rm'].reject(&:empty?).join(',')
 # Run configure.sh to configure the nodes, do NOT bring the cluster up
 
 bash 'Run configure.sh to configure cluster' do
-  command <<-EOH
+  code <<-EOH
 
   #{node['mapr']['home']}/server/configure.sh \
            -C #{cldb_nodes} \

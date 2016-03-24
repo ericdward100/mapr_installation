@@ -127,15 +127,12 @@ ruby_block 'CLDB up and running?' do
   end
 end
 
-# Get running warden count
-warden_running = '0'
-
-ruby_block 'Getting running warden count' do
-  block do
-    while warden_running.to_s != node['mapr']['node_count'] do
-      wc = `maprcli node list -columns hostname|grep -v "hostname                      ip"|wc -l`
-      warden_running = /#{node['mapr']['node_count']}/.match(wc)
-      `sleep 20`
-    end
-  end
+bash 'wait for all nodes to come up' do
+  code <<-EOH
+    while $( maprcli node list -columns hostname |
+                  grep -v "^hostname" |
+                  wc ) -lt #{node['mapr']['node_count']}; do
+      sleep 20
+    done
+  EOH
 end

@@ -1,8 +1,10 @@
 log "\n=========== Start MapR validate_host.rb =============\n"
 
+include_recipe 'sysctl::default'
+
 bash 'uname -m' do
   code <<-EOF
-    uname -m`
+    uname -m
   EOF
 end
 
