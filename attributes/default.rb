@@ -7,11 +7,7 @@ default['mapr']['group'] = 'mapr'
 default['mapr']['manage_java'] = true
 
 # All MapR nodes in this cluster
-default['mapr']['cluster_nodes'] = [
-  'ip-172-16-2-80.ec2.internal',
-  'ip-172-16-2-227.ec2.internal',
-  'ip-172-16-2-245.ec2.internal'
-]
+default['mapr']['cluster_nodes'] = []
 
 # Enter total number of nodes in MapR cluster here
 default['mapr']['node_count'] = '3'
@@ -32,3 +28,5 @@ default['mapr']['node']['disks'] = '/dev/xvdf,/dev/xvdg'
 
 # default['java']['version'] = 'java-1.7.0-openjdk-devel-1.7.0.79-2.5.5.3.el6_6.x86_64'
 # default['java']['home'] = '/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.79.x86_64/'
+
+default['mapr']['yum']['gpgkey_url'] = 'http://package.mapr.com/releases/pub/maprgpg.key'

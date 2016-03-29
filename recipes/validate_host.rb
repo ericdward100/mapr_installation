@@ -1,5 +1,7 @@
 log "\n=========== Start MapR validate_host.rb =============\n"
 
+gpgkey_url = node['mapr']['yum']['gpgkey_url']
+
 include_recipe 'sysctl::default'
 
 bash 'uname -m' do
@@ -42,13 +44,15 @@ end
 yum_repository 'maprtech' do
   description 'MapR Technologies'
   baseurl "http://package.mapr.com/releases/v#{node['mapr']['version']}/redhat"
-  gpgcheck false
+  gpgcheck true
+  gpgkey gpgkey_url
   action :create
 end
 
 yum_repository 'maprecosystem' do
   description 'MapR Technologies (ecosystem)'
   baseurl 'http://package.mapr.com/releases/ecosystem-4.x/redhat'
-  gpgcheck false
+  gpgcheck true
+  gpgkey gpgkey_url
   action :create
 end

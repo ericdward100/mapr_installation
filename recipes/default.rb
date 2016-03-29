@@ -92,46 +92,68 @@ end
 
 include_recipe 'mapr_installation::mapr_start_warden' if is_cldb == 'no'
 
-warden_running = 'no'
-run_check = 'no'
-ruby_block 'Warden running?' do
-  block do
-    while warden_running == 'no'
-      run_check = `service mapr-warden status`
-      rc = /process/.match(run_check)
 
-      if rc.to_s == 'process'
-        warden_running = 'yes'
-      else
-        `sleep 5`
-        print '\nSleeping for 5, waiting on warden to start...\n'
-      end
-    end
-  end
+# WARDEN running as process 1392.
+
+bash 'wait for warden' do
+  code <<-EOH
+    until service mapr-warden status | grep 'process' ; do
+      echo  "waiting 10s for WARDEN to come up" | logger
+      sleep 10
+    done
+  EOH
 end
 
-cldb_running = 'no'
-ruby_block 'CLDB up and running?' do
-  block do
-    while cldb_running == 'no'
-      run_check = `maprcli node cldbmaster`
-      rc = /ServerID/.match(run_check)
+# warden_running = 'no'
+# run_check = 'no'
+# ruby_block 'Warden running?' do
+#   block do
+#     while warden_running == 'no'
+#       run_check = `service mapr-warden status`
+#       rc = /process/.match(run_check)
 
-      if rc.to_s == 'ServerID'
-        cldb_running = 'yes'
-      else
-        `sleep 5`
-        print '\nSleeping for 5, waiting on CLDB...\n'
-      end
-    end
-  end
+#       if rc.to_s == 'process'
+#         warden_running = 'yes'
+#       else
+#         `sleep 5`
+#         print '\nSleeping for 5, waiting on warden to start...\n'
+#       end
+#     end
+#   end
+# end
+
+
+bash 'wait for CLDB' do
+  code <<-EOH
+    until maprcli node cldbmaster | grep 'ServerID'; do
+      echo  "waiting 10s for CLDB to come up" | logger
+      sleep 10
+    done
+  EOH
 end
+
+# cldb_running = 'no'
+# ruby_block 'CLDB up and running?' do
+#   block do
+#     while cldb_running == 'no'
+#       run_check = `maprcli node cldbmaster`
+#       rc = /ServerID/.match(run_check)
+
+#       if rc.to_s == 'ServerID'
+#         cldb_running = 'yes'
+#       else
+#         `sleep 5`
+#         print '\nSleeping for 5, waiting on CLDB...\n'
+#       end
+#     end
+#   end
+# end
 
 bash 'wait for all nodes to come up' do
   code <<-EOH
-    while $( maprcli node list -columns hostname |
+    while [ $( maprcli node list -columns hostname |
                   grep -v "^hostname" |
-                  wc ) -lt #{node['mapr']['node_count']}; do
+                  wc ) -lt #{node['mapr']['node_count']} ]; do
       sleep 20
     done
   EOH

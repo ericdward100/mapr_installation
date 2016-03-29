@@ -3,6 +3,11 @@ mapr_installation CHANGELOG
 
 This file is used to list changes made in each version of the mapr_installation cookbook.
 
+## v0.3.2
+
+* add the rpm gpgkey
+* turn more ruby blocks into bash blocks
+
 ## v0.3.1
 
 * make the /etc/clustershell directory
