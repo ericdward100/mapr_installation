@@ -85,13 +85,12 @@ end
 if is_cldb == 'yes'
   include_recipe 'mapr_installation::mapr_start_warden'
 else
-  execute 'sleep fopr cldb' do
+  execute 'sleep for cldb' do
     command 'sleep 120'
   end
 end
 
 include_recipe 'mapr_installation::mapr_start_warden' if is_cldb == 'no'
-
 
 # WARDEN running as process 1392.
 
@@ -111,7 +110,6 @@ end
 #     while warden_running == 'no'
 #       run_check = `service mapr-warden status`
 #       rc = /process/.match(run_check)
-
 #       if rc.to_s == 'process'
 #         warden_running = 'yes'
 #       else
@@ -121,7 +119,6 @@ end
 #     end
 #   end
 # end
-
 
 bash 'wait for CLDB' do
   code <<-EOH
@@ -138,7 +135,6 @@ end
 #     while cldb_running == 'no'
 #       run_check = `maprcli node cldbmaster`
 #       rc = /ServerID/.match(run_check)
-
 #       if rc.to_s == 'ServerID'
 #         cldb_running = 'yes'
 #       else

@@ -3,6 +3,10 @@ mapr_installation CHANGELOG
 
 This file is used to list changes made in each version of the mapr_installation cookbook.
 
+## v0.4.0
+
+* install Apache Spark
+
 ## v0.3.2
 
 * add the rpm gpgkey
