@@ -4,7 +4,7 @@
 #
 # Copyright (c) 2016 Synchronoss Technologies, Inc., All Rights Reserved.
 
-# create a spark master node, with spark history server
+# create a spark worker node
 
 mapr_homedir  = node['mapr']['home']
 
