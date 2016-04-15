@@ -16,6 +16,7 @@ directory '/mapr' do
   owner 'root'
   group 'root'
   mode 00755
+  not_if 'test -d /mapr'
 end
 
 # Create a mapr_fstab file so mapr-nfsserver can automount /mapr

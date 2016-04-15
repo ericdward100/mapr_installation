@@ -30,3 +30,6 @@ default['mapr']['node']['disks'] = '/dev/xvdf,/dev/xvdg'
 # default['java']['home'] = '/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.79.x86_64/'
 
 default['mapr']['yum']['gpgkey_url'] = 'http://package.mapr.com/releases/pub/maprgpg.key'
+
+default['mapr']['clustershell']['rpm_url'] =
+  'https://github.com/downloads/cea-hpc/clustershell/clustershell-1.6-1.el6.noarch.rpm'

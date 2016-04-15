@@ -1,0 +1,32 @@
+# # Cookbook Name:: mapr_installation
+# Recipe:: _make_coresite.xml
+#
+# Copyright 2015, YOUR_COMPANY_NAME
+#
+# All rights reserved - Do Not Redistribute
+#
+
+# create the core-site xml from node attributes
+
+require 'mixlib/shellout'
+
+mapr_homedir = node['mapr']['home']
+mapr_user    = node['mapr']['user']
+mapr_group   = node['mapr']['group']
+
+do_cat = Mixlib::ShellOut.new("cat #{mapr_homedir}/hadoop/hadoopversion")
+do_cat.run_command
+
+version = do_cat.stdout.chomp
+hadoop_homedir = "#{mapr_homedir}/hadoop/hadoop-#{version}"
+
+template 'update-core-site.xml' do
+  path "#{hadoop_homedir}/etc/hadoop/core-site.xml"
+  source 'hadoop/core-site.xml.erb'
+  owner mapr_user
+  group mapr_group
+  mode 00444
+  variables({
+              properties: node['mapr']['coresite_xml']
+            })
+end

@@ -5,6 +5,9 @@ This file is used to list changes made in each version of the mapr_installation 
 
 ## v0.5.0
 
+* fix bug in ::spark_master
+## v0.5.0
+
 * install drill
 
 ## v0.4.0

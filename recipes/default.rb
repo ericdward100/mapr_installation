@@ -71,6 +71,7 @@ end
 
 include_recipe 'mapr_installation::mapr_setenv'
 include_recipe 'mapr_installation::mapr_configure'
+include_recipe 'mapr_installation::_make_coresite_xml'
 
 # Start Zookeeper service
 if is_zk == 'yes'
@@ -92,8 +93,6 @@ end
 
 include_recipe 'mapr_installation::mapr_start_warden' if is_cldb == 'no'
 
-# WARDEN running as process 1392.
-
 bash 'wait for warden' do
   code <<-EOH
     until service mapr-warden status | grep 'process' ; do
@@ -102,23 +101,6 @@ bash 'wait for warden' do
     done
   EOH
 end
-
-# warden_running = 'no'
-# run_check = 'no'
-# ruby_block 'Warden running?' do
-#   block do
-#     while warden_running == 'no'
-#       run_check = `service mapr-warden status`
-#       rc = /process/.match(run_check)
-#       if rc.to_s == 'process'
-#         warden_running = 'yes'
-#       else
-#         `sleep 5`
-#         print '\nSleeping for 5, waiting on warden to start...\n'
-#       end
-#     end
-#   end
-# end
 
 bash 'wait for CLDB' do
   code <<-EOH
@@ -129,27 +111,11 @@ bash 'wait for CLDB' do
   EOH
 end
 
-# cldb_running = 'no'
-# ruby_block 'CLDB up and running?' do
-#   block do
-#     while cldb_running == 'no'
-#       run_check = `maprcli node cldbmaster`
-#       rc = /ServerID/.match(run_check)
-#       if rc.to_s == 'ServerID'
-#         cldb_running = 'yes'
-#       else
-#         `sleep 5`
-#         print '\nSleeping for 5, waiting on CLDB...\n'
-#       end
-#     end
-#   end
-# end
-
 bash 'wait for all nodes to come up' do
   code <<-EOH
-    while [ $( maprcli node list -columns hostname |
-                  grep -v "^hostname" |
-                  wc ) -lt #{node['mapr']['node_count']} ]; do
+    while [ $( maprcli node list -columns hostname | \
+                  grep -v "^hostname" | wc )
+                  -lt #{node['mapr']['node_count']} ]; do
       sleep 20
     done
   EOH

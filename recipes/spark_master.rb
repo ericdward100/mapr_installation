@@ -12,6 +12,8 @@ mapr_homedir  = node['mapr']['home']
 
 spark_homedir = "#{mapr_homedir}/spark/spark-current"
 
+include_recipe 'mapr_installation::_spark_common'
+
 bash 'spark fs dirs' do
   code <<-EOH
     hadoop fs -mkdir /apps/spark
@@ -19,17 +21,10 @@ bash 'spark fs dirs' do
   EOH
 end
 
-%w( mapr-spark mapr-spark-master mapr-spark-historyserver ).each do |pkg|
+%w( mapr-spark-master mapr-spark-historyserver ).each do |pkg|
   package pkg do
-    notifies :run, 'configure spark master node'
+    notifies :run, 'bash[configure spark master node]'
   end
-end
-
-bash "create symlink for #{spark_homedir}" do
-  code <<-EOH
-    ln -s #{mapr_homedir}/spark/spark-* #{spark_homedir}
-  EOH
-  not_if "test -r #{spark_homedir}"
 end
 
 bash 'configure spark master node' do

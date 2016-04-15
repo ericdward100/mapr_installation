@@ -1,0 +1,8 @@
+
+PATH=$PATH:<%= @spark_path %>
+export PATH
+
+<% if ! @spark_public_dns.nil? -%>
+SPARK_PUBLIC_DNS=<%= @spark_public_dns %>
+export SPARK_PUBLIC_DNS
+<% end -%>
