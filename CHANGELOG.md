@@ -3,6 +3,21 @@ mapr_installation CHANGELOG
 
 This file is used to list changes made in each version of the mapr_installation cookbook.
 
+## v0.6.2
+
+* set the core-site.xml action and notifies
+
+## v0.5.0
+
+* fix bug in ::spark_master
+## v0.5.0
+
+* install drill
+
+## v0.4.0
+
+* install Apache Spark
+
 ## v0.3.2
 
 * add the rpm gpgkey

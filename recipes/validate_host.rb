@@ -52,7 +52,7 @@ end
 yum_repository 'maprecosystem' do
   description 'MapR Technologies (ecosystem)'
   baseurl 'http://package.mapr.com/releases/ecosystem-4.x/redhat'
-  gpgcheck true
+  gpgcheck false
   gpgkey gpgkey_url
   action :create
 end
