@@ -20,7 +20,10 @@ do_cat.run_command
 version = do_cat.stdout.chomp
 hadoop_homedir = "#{mapr_homedir}/hadoop/hadoop-#{version}"
 
-template 'update-core-site.xml' do
+# the template should get executed at the end of the run,
+# so any properties that were created will get included.
+
+template 'core-site.xml' do
   path "#{hadoop_homedir}/etc/hadoop/core-site.xml"
   source 'hadoop/core-site.xml.erb'
   owner mapr_user
@@ -29,4 +32,5 @@ template 'update-core-site.xml' do
   variables({
               properties: node['mapr']['coresite_xml']
             })
+  notifies :restart, 'service[mapr-warden]'
 end

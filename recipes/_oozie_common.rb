@@ -23,6 +23,7 @@ oozie_node = node['fqdn']
 %w( mapr-oozie-internal mapr-oozie ).each do |pkg|
   package pkg do
     action :install
+    notifies :create, 'template[core-site.xml]'
     notifies :restart, 'service[mapr-warden]'
   end
 end
